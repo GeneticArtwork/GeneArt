@@ -12,7 +12,7 @@
 //////////////
 // INCLUDES //
 //////////////
-#include <windows.h>
+#include "Global.h"
 #include <gl\gl.h>
 #include <math.h>
 
@@ -96,9 +96,9 @@ public:
 	OpenGL();
 	~OpenGL();
 
-	bool InitializeExtensions(HWND);
-	bool InitializeOpenGL(HWND, int, int, float, float, bool);
-	void Shutdown(HWND);
+	bool InitializeExtensions();
+	bool InitializeOpenGL(int, int, float, float, bool);
+	void Shutdown();
 
 	void BeginScene(float, float, float, float);
 	void EndScene();

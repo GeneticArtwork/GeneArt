@@ -3,13 +3,15 @@
 //
 // JOP
 ////////////////////////////////////////////////////////////////////////////////
+#pragma once
 
-#include "stdafx.h"
 #include <iostream>
 #include <list>
 #include <string>
 #include <sstream>
 #include <math.h>
+#include <tchar.h>
+
 #include "system.h"
 
 

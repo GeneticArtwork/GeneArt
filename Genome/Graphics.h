@@ -1,1 +1,45 @@
+////////////////////////////////////////////////////////////////////////////////
+// Filename: graphics.h
+////////////////////////////////////////////////////////////////////////////////
+#ifndef _GRAPHICS_H_
+#define _GRAPHICS_H_
+
+
+///////////////
+// INCLUDES //
+//////////////
 #include "OpenGL.h"
+
+/////////////
+// GLOBALS //
+/////////////
+const bool FULL_SCREEN = false;
+const bool VSYNC_ENABLED = true;
+const float SCREEN_DEPTH = 1000.0f;
+const float SCREEN_NEAR = 0.1f;
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Class name: Graphics
+//
+// Handles OpenGL object and frame rendering.
+////////////////////////////////////////////////////////////////////////////////
+class Graphics
+{
+public:
+	Graphics();
+	~Graphics();
+
+	bool Initialize();
+	void Shutdown();
+	bool Frame();
+	OpenGL*	GetOpenGL();				// Return pointer to open gl object.
+private:
+	bool Render();
+
+private:
+	OpenGL*	m_openGL;
+
+};
+
+#endif

@@ -10,7 +10,7 @@ OpenGL::~OpenGL()
 {
 }
 
-bool OpenGL::InitializeExtensions(HWND hwnd)
+bool OpenGL::InitializeExtensions()
 {
 	HDC deviceContext;
 	PIXELFORMATDESCRIPTOR pixelFormat;
@@ -19,7 +19,7 @@ bool OpenGL::InitializeExtensions(HWND hwnd)
 	bool result;
 
 	// Get the device context for this window.
-	deviceContext = GetDC(hwnd);
+	deviceContext = GetDC(g_hwnd);
 	if(!deviceContext)
 	{
 		return false;
@@ -59,13 +59,13 @@ bool OpenGL::InitializeExtensions(HWND hwnd)
 	renderContext = NULL;
 
 	// Release the device context for this window.
-	ReleaseDC(hwnd, deviceContext);
+	ReleaseDC(g_hwnd, deviceContext);
 	deviceContext = 0;
 
 	return true;
 }
 
-bool OpenGL::InitializeOpenGL(HWND hwnd, int screenWidth, int screenHeight, float screenDepth, float screenNear, bool vsync)
+bool OpenGL::InitializeOpenGL(int screenWidth, int screenHeight, float screenDepth, float screenNear, bool vsync)
 {
 	int attributeListInt[19];
 	int pixelFormat[1];
@@ -78,7 +78,7 @@ bool OpenGL::InitializeOpenGL(HWND hwnd, int screenWidth, int screenHeight, floa
 
 
 	// Get the device context for this window.
-	m_deviceContext = GetDC(hwnd);
+	m_deviceContext = GetDC(g_hwnd);
 	if(!m_deviceContext)
 	{
 		return false;
@@ -211,7 +211,7 @@ bool OpenGL::InitializeOpenGL(HWND hwnd, int screenWidth, int screenHeight, floa
 	return true;
 }
 
-void OpenGL::Shutdown(HWND hwnd)
+void OpenGL::Shutdown()
 {
 	// Release the rendering context.
 	if(m_renderingContext)
@@ -224,11 +224,10 @@ void OpenGL::Shutdown(HWND hwnd)
 	// Release the device context.
 	if(m_deviceContext)
 	{
-		ReleaseDC(hwnd, m_deviceContext);
+		ReleaseDC(g_hwnd, m_deviceContext);
 		m_deviceContext = 0;
 	}
 
-	return;
 }
 
 void OpenGL::BeginScene(float red, float green, float blue, float alpha)

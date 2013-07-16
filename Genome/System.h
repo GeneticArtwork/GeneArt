@@ -7,9 +7,9 @@
 //////////////
 // INCLUDES //
 //////////////
-#include <Windows.h>
+#include "Graphics.h"
 #include "Genome.h"
-#include "OpenGL.h"
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Class name: System
@@ -27,11 +27,16 @@ public:
 	LRESULT CALLBACK MessageHandler(HWND, UINT, WPARAM, LPARAM);
 
 private:
+	bool Frame();
+	bool InitializeGraphics();
+	bool InitializeWindows();
 	bool ExecuteCommand(string* commands, int commandCount);
+	void ShutdownWindows();
 
 private:
-	Genome*	m_genome;
-
+	Genome*		m_genome;
+	Graphics*	m_graphics;
+	HINSTANCE	m_hinstance;
 };
 
 
