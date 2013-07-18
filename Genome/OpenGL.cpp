@@ -1,4 +1,5 @@
 #include "OpenGL.h"
+#include "Global.h"
 
 OpenGL::OpenGL()
 {

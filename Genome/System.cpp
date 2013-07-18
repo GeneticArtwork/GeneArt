@@ -6,6 +6,8 @@
 #define QUIT			"quit"
 #define OPENGL			"opengl"
 
+#define USER_QUIT		1
+
 System::System()
 {
 	m_genome = 0;
@@ -27,12 +29,15 @@ bool System::Initialize()
 
 bool System::InitializeGraphics()
 {
-	m_graphics = new Graphics;
+	// The global openGL object is loaded here.
+	g_openGL = new OpenGL;
 
-	m_graphics->Initialize();
+	m_graphics = new Graphics;
 
 	if(!InitializeWindows())
 		return false;
+
+	m_graphics->Initialize();
 
 	return true;
 }
@@ -79,7 +84,7 @@ bool System::InitializeWindows()
 	ShowWindow(g_hwnd, SW_HIDE);
 	
 	// Initialize a temporary OpenGL window and load the OpenGL extensions.
-	result = m_graphics->GetOpenGL()->InitializeExtensions();
+	result = g_openGL->InitializeExtensions();
 	if(!result)
 	{
 		MessageBox(g_hwnd, L"Could not initialize the OpenGL extensions.", L"Error", MB_OK);
@@ -95,7 +100,7 @@ bool System::InitializeWindows()
 	g_screenHeight = GetSystemMetrics(SM_CYSCREEN);
 
 	// Setup the screen settings depending on whether it is running in full screen or in windowed mode.
-	if(FULL_SCREEN)
+	if(g_fullScreen)
 	{
 		// If full screen set the screen to maximum size of the users desktop and 32bit.
 		memset(&dmScreenSettings, 0, sizeof(dmScreenSettings));
@@ -132,7 +137,7 @@ bool System::InitializeWindows()
 	}
 	
 	// Initialize OpenGL now that the window has been created.
-	result = m_graphics->GetOpenGL()->InitializeOpenGL(g_screenWidth, g_screenHeight, SCREEN_DEPTH, SCREEN_NEAR, VSYNC_ENABLED);
+	result = g_openGL->InitializeOpenGL(g_screenWidth, g_screenHeight, g_screenDepth, g_screenNear, g_vsync);
 	if(!result)
 	{
 		MessageBox(g_hwnd, L"Could not initialize OpenGL, check if your video card supports OpenGL 4.0.", L"Error", MB_OK);
@@ -146,6 +151,8 @@ bool System::InitializeWindows()
 
 	// Hide the mouse cursor.
 	ShowCursor(false);
+
+	return true;
 }
 
 void System::ShutdownWindows()
@@ -154,7 +161,7 @@ void System::ShutdownWindows()
 	ShowCursor(true);
 
 	// Fix the display settings if leaving full screen mode.
-	if(FULL_SCREEN)
+	if(g_fullScreen)
 	{
 		ChangeDisplaySettings(NULL, 0);
 	}
@@ -219,6 +226,13 @@ void System::Shutdown()
 		delete m_graphics;
 		m_graphics = 0;
 	}
+
+	if(g_openGL)
+	{
+		g_openGL->Shutdown();
+		delete g_openGL;
+		g_openGL = 0;
+	}
 }
 
 void System::Run()
@@ -229,25 +243,51 @@ void System::Run()
 	bool done = false;
 	while(!done)
 	{
-		string input;
-		string command[2]	= {"", ""};
+		// Frame processing for all system events.
+		Frame();
 
-		getline(cin, input);
-
-		// Break apart commands.
-		istringstream iss(input);
-		int i = 0;
-		while(iss && i < 2)
+		// Handle user input. Return message indicates what the user prompted.
+		switch(HandleConsole())
 		{
-			iss >> command[i++];
+			// User quits.
+			case USER_QUIT:
+			{
+				done = true;
+				break;
+			}
 		}
-
-		// If ExecuteCommand returns true the user has quit.
-		done = ExecuteCommand(command, i);
 	}
 }
 
-bool System::ExecuteCommand(string* commands, int commandCount)
+int System::HandleConsole()
+{
+	string input;
+	string command[2]	= {"", ""};
+
+	getline(cin, input);
+
+	// Break apart commands.
+	istringstream iss(input);
+	int i = 0;
+	while(iss && i < 2)
+	{
+		iss >> command[i++];
+	}
+
+	// If ExecuteCommand returns true the user has quit.
+	return ExecuteCommand(command, i);
+}
+
+bool System::Frame()
+{
+	// Perform graphics processing and render the frame.
+	if(m_graphics)
+		m_graphics->Frame();
+
+	return true;
+}
+
+int System::ExecuteCommand(string* commands, int commandCount)
 {
 	cout << "\n";
 
@@ -287,7 +327,7 @@ bool System::ExecuteCommand(string* commands, int commandCount)
 	}
 	else if(commands[0] == QUIT)
 	{
-		return true;
+		return USER_QUIT;
 	}
 	else
 	{
@@ -296,5 +336,5 @@ bool System::ExecuteCommand(string* commands, int commandCount)
 
 	cout << "\n\n> ";
 
-	return false;
+	return 0;
 }

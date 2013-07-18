@@ -30,7 +30,8 @@ private:
 	bool Frame();
 	bool InitializeGraphics();
 	bool InitializeWindows();
-	bool ExecuteCommand(string* commands, int commandCount);
+	int ExecuteCommand(string* commands, int commandCount);
+	int HandleConsole();													// The windows console output and input.
 	void ShutdownWindows();
 
 private:

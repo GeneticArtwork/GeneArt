@@ -8,16 +8,10 @@
 ///////////////
 // INCLUDES //
 //////////////
-#include "OpenGL.h"
-
-/////////////
-// GLOBALS //
-/////////////
-const bool FULL_SCREEN = false;
-const bool VSYNC_ENABLED = true;
-const float SCREEN_DEPTH = 1000.0f;
-const float SCREEN_NEAR = 0.1f;
-
+#include "global.h"
+#include "Camera.h"
+#include "RenderShader.h"
+#include "Mesh.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // Class name: Graphics
@@ -33,13 +27,14 @@ public:
 	bool Initialize();
 	void Shutdown();
 	bool Frame();
-	OpenGL*	GetOpenGL();				// Return pointer to open gl object.
 private:
 	bool Render();
-
+	void RenderMeshes();
+	void ShutdownMeshes();
 private:
-	OpenGL*	m_openGL;
-
+	Camera*			m_camera;
+	RenderShader*	m_renderShader;
+	vector<Mesh*>	m_meshes;
 };
 
 #endif
