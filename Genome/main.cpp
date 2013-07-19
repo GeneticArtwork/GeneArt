@@ -4,14 +4,8 @@
 // This executes on program launch and should have access
 // to all program .h files.
 ////////////////////////////////////////////////////////////////////////////////
-#pragma once
 
-#include <iostream>
-#include <list>
-#include <string>
-#include <sstream>
 #include <tchar.h>
-
 #include "system.h"
 
 

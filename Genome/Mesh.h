@@ -10,6 +10,7 @@
 ///////////////////////
 #include "Global.h"
 
+using namespace std;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Class name: Mesh
@@ -21,9 +22,10 @@ class Mesh
 private:
 	struct VertexType
 	{
-		float x, y, z;				// Position
-		float nx, ny, nz;			// Normals
-		float u, v;					// Texture UV
+		vector3d position;						// Position
+		vector3d normal;						// Normals
+		vector3d color;							// Color
+		vector2d texture;						// Texture UV
 	};
 
 public:
@@ -32,12 +34,16 @@ public:
 
 	bool Initialize();
 	void Shutdown();
-	void Render();
-
+	void Render();								// Render the mesh.
+	bool LoadTriangle();						// Test method to load a triangle.
+	bool ImportOBJ(char* fileName);				// Import a wavefront object.
 private:
-	bool InitializeBuffers();
+	bool InitializeBuffers(VertexType* vertices, unsigned long* indices, int vertexCount, int indexCount);
 	void ShutdownBuffers();
 	void RenderBuffers();
+	void GetOBJFileCounts(ifstream& file,		// Retrieve vertex count information
+		int& vertexCount, int& indexCount,		// for the wavefront object.
+		int& texCount, int& normalCount);
 
 private:
 	int m_vertexCount, m_indexCount;

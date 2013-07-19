@@ -25,7 +25,7 @@ bool Graphics::Initialize()
 	m_renderShader = new RenderShader;
 	if(!m_renderShader->Initialize())
 	{
-		MessageBox(g_hwnd, L"Could not initialize renderShader", L"GRAPHICS ERROR", MB_OK);
+		ErrorMessage("Could not initialize renderShader", ERROR_GRAPHICS);
 		return false;
 	}
 
@@ -58,7 +58,7 @@ void Graphics::Shutdown()
 
 void Graphics::ShutdownMeshes()
 {
-	for(int i = 0; i < m_meshes.size(); i++)
+	for(unsigned int i = 0; i < m_meshes.size(); i++)
 	{
 		if(m_meshes[i])
 		{

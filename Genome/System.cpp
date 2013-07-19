@@ -87,7 +87,7 @@ bool System::InitializeWindows()
 	result = g_openGL->InitializeExtensions();
 	if(!result)
 	{
-		MessageBox(g_hwnd, L"Could not initialize the OpenGL extensions.", L"Error", MB_OK);
+		ErrorMessage("Could not initialize the OpenGL extensions.", ERROR_GRAPHICS);
 		return false;
 	}
 
@@ -140,7 +140,7 @@ bool System::InitializeWindows()
 	result = g_openGL->InitializeOpenGL(g_screenWidth, g_screenHeight, g_screenDepth, g_screenNear, g_vsync);
 	if(!result)
 	{
-		MessageBox(g_hwnd, L"Could not initialize OpenGL, check if your video card supports OpenGL 4.0.", L"Error", MB_OK);
+		ErrorMessage("Could not initialize OpenGL, check if your video card supports OpenGL 4.0.", ERROR_GRAPHICS);
 		return false;
 	}
 

@@ -11,10 +11,21 @@
 ///////////////
 // INCLUDES //
 //////////////
+#include <string>
+#include <sstream>
+#include <iostream>
+#include <fstream>
 #include <vector>
+#include <list>
+
 #include "OpenGL.h"
 
 #define APPLICATION_NAME		L"GeneArt"
+
+///////////////
+// Directories //
+//////////////
+#define OBJECT_DIRECTORY		"../Data/Objects/"
 
 ///////////////
 // Variables //
@@ -45,6 +56,7 @@ extern bool g_vsync;
 struct vector2d
 {
 	vector2d(float x, float y) {};
+	vector2d(){x = y = 0.0f;};
 	float x, y;
 };
 
@@ -54,5 +66,13 @@ struct vector3d
 	vector3d(){x = y = z = 0.0f;};
 	float x, y, z;
 };
+
+////////////////////////////////////
+//	Misc functions
+////////////////////////////////////
+#define ERROR_GRAPHICS		"GRAPHICS ERROR"
+
+extern void ErrorMessage(char* message, char* messageType);
+
 
 #endif

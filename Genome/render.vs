@@ -8,12 +8,16 @@
 // INPUT VARIABLES //
 /////////////////////
 in vec3 inputPosition;
+in vec3 inputNormal;
 in vec3 inputColor;
+in vec2 inputUV;
 
 //////////////////////
 // OUTPUT VARIABLES //
 //////////////////////
+out vec3 normal;
 out vec3 color;
+out vec2 uv;
 
 ///////////////////////
 // UNIFORM VARIABLES //
@@ -32,6 +36,8 @@ void main(void)
 	gl_Position = viewMatrix * gl_Position;
 	gl_Position = projectionMatrix * gl_Position;
 
-	// Store the input color for the pixel shader to use.
+	// Output variables to the fragment shader.
+	normal = inputNormal;
 	color = inputColor;
+	uv = inputUV;
 }

@@ -106,7 +106,9 @@ bool RenderShader::InitializeShader(char* vsFilename, char* fsFilename)
 
 	// Bind the shader input variables.
 	g_openGL->glBindAttribLocation(m_shaderProgram, 0, "inputPosition");
-	g_openGL->glBindAttribLocation(m_shaderProgram, 1, "inputColor");
+	g_openGL->glBindAttribLocation(m_shaderProgram, 1, "inputNormal");
+	g_openGL->glBindAttribLocation(m_shaderProgram, 2, "inputColor");
+	g_openGL->glBindAttribLocation(m_shaderProgram, 3, "inputUV");
 
 	// Link the shader program.
 	g_openGL->glLinkProgram(m_shaderProgram);
@@ -222,7 +224,7 @@ void RenderShader::OutputShaderErrorMessage(unsigned int shaderId, char* shaderF
 	}
 
 	// Pop a message up on the screen to notify the user to check the text file for compile errors.
-	MessageBox(g_hwnd, L"Error compiling shader.  Check shader-error.txt for message.", newString, MB_OK);
+	ErrorMessage("Error compiling shader.  Check shader-error.txt for message.", ERROR_GRAPHICS);
 }
 
 void RenderShader::OutputLinkerErrorMessage(unsigned int programId)
@@ -261,7 +263,7 @@ void RenderShader::OutputLinkerErrorMessage(unsigned int programId)
 	fout.close();
 
 	// Pop a message up on the screen to notify the user to check the text file for linker errors.
-	MessageBox(g_hwnd, L"Error compiling linker.  Check linker-error.txt for message.", L"Linker Error", MB_OK);
+	ErrorMessage("Error compiling linker.  Check linker-error.txt for message.", ERROR_GRAPHICS);
 }
 
 void RenderShader::ShutdownShader()
